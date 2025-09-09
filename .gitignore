@@ -1,0 +1,15 @@
+# Go build
+/bin/
+/out/
+/vendor/
+
+# Editor、IDE
+*.swp
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Dependency directories (remove the comment below to include vendor)
+/vendor/
