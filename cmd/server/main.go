@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/gin-gonic/gin"
 	"github.com/machillka/shopping-system/internal/application"
 	"github.com/machillka/shopping-system/internal/domain"
 	"github.com/machillka/shopping-system/internal/infra/sqlite"
@@ -21,8 +22,13 @@ func main() {
 	defer sqlite.Close()
 
 	orderRepo := sqlite.NewOrderRepository()
-	domainSvc := domain.DefalultOrderDomainService()
+	domainSvc := domain.DefalultOrderDomainService{}
 	// 依赖注入
 	orderSvc := application.NewOrderService(orderRepo, domainSvc)
-	
+
+	gin.SetMode(gin.ReleaseMode)
+	rounter := gin.New()
+	rounter.Use(gin.Logger(), gin.Recovery())
+
+	handler := h
 }
