@@ -1,3 +1,5 @@
 database:
   sqlite:
     path: "./data/order.db"
+server:
+  address: ":8080"

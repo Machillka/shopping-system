@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 
+	httpadapter "github.com/machillka/shopping-system/internal/adapters/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/machillka/shopping-system/internal/application"
 	"github.com/machillka/shopping-system/internal/domain"
@@ -30,5 +32,13 @@ func main() {
 	rounter := gin.New()
 	rounter.Use(gin.Logger(), gin.Recovery())
 
-	handler := h
+	handler := httpadapter.NewOrderHandler(orderSvc)
+	handler.RegisterRoutes(rounter)
+
+	addr := viper.GetString("server.address")
+	log.Printf("Starting server in %s", addr)
+	if err := rounter.Run(addr); err != nil {
+		log.Fatal("server error:", err)
+	}
+
 }

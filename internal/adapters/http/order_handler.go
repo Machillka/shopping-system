@@ -63,9 +63,36 @@ func (h *OrderHandler) CreateOrder(c *gin.Context) {
 	c.JSON(http.StatusCreated, createOrderResponse{OrderID: id})
 }
 
+func (h *OrderHandler) GetOrder(c *gin.Context) {
+	id := c.Param("id")
+	order, err := h.svc.GetbyId(c.Request.Context(), id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"errors": err.Error()})
+		return
+	}
+
+	if order == nil {
+		c.JSON(http.StatusNotFound, gin.H{"errors": "订单未找到"})
+		return
+	}
+
+	c.JSON(http.StatusOK, order)
+}
+
+func (h *OrderHandler) CancelOrder(c *gin.Context) {
+	id := c.Param("id")
+	if err := h.svc.Cancel(c.Request.Context(), id); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"errors": err.Error()})
+		return
+	}
+	c.Status(http.StatusNoContent)
+}
+
 func (h *OrderHandler) RegisterRoutes(r *gin.Engine) {
 	grp := r.Group("/orders")
 	{
-		grp.POST("")
+		grp.POST("", h.CreateOrder)
+		grp.GET("/:id", h.GetOrder)
+		grp.POST("/:id/cancel", h.CancelOrder)
 	}
 }
