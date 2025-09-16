@@ -29,6 +29,7 @@
 - configs: 配置文件
 - scripts: 辅助脚本
 
+```
 ├── cmd/
 │   └── order/              # 可执行启动文件
 ├── internal/
@@ -44,3 +45,4 @@
 ├── scripts/                # 数据库迁移、构建脚本
 ├── go.mod
 └── Makefile
+```
