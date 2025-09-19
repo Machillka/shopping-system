@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var (
@@ -20,7 +22,7 @@ func Init(dbPath string) error {
 			return
 		}
 		connStr := dbPath + "?_journey_mode=WAL"
-		db, err = sql.Open("sqlite", connStr)
+		db, err = sql.Open("sqlite3", connStr)
 		if err != nil {
 			return
 		}

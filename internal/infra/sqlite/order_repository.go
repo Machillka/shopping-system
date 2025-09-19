@@ -87,12 +87,12 @@ func (r *orderRepo) FindById(ctx context.Context, id string) (*domain.Order, err
 	}
 
 	o := &domain.Order{
-		ID: id,
-		UserID: userId,
+		ID:          id,
+		UserID:      userId,
 		TotalAmount: totalAmount,
-		Status: domain.OrderStatus(status),
-		CreateAt: createAt,
-		UpdateAt: updateAt,
+		Status:      domain.OrderStatus(status),
+		CreateAt:    createAt,
+		UpdateAt:    updateAt,
 	}
 
 	rows, err := r.db.QueryContext(ctx, `
@@ -108,21 +108,20 @@ func (r *orderRepo) FindById(ctx context.Context, id string) (*domain.Order, err
 
 	for rows.Next() {
 		var (
-			sku string
+			sku       string
 			unitPrice float32
-			quantity int
+			quantity  int
 		)
 
 		if err := rows.Scan(&sku, &unitPrice, &quantity); err != nil {
 			return nil, err
 		}
 		o.Items = append(o.Items, domain.OrderItem{
-			SKU: sku,
+			SKU:       sku,
 			UnitPrice: unitPrice,
-			Quantity: quantity,
+			Quantity:  quantity,
 		})
 	}
 
 	return o, nil
 }
-

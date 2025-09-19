@@ -7,10 +7,18 @@ import (
 	"github.com/machillka/shopping-system/internal/domain"
 )
 
+/*====== 组装真正使用软件的业务逻辑与流程
+仅调用各个接口，使得具体的实现细节可以通过依赖注入的方式进行替换
+如 创建订单——
+1. 调用Domain中创建订单
+2. 保存到数据库中
+*/
+
+
 // 定义输入参数
 type CreateOrderInput struct {
 	UserID string
-	Items []domain.OrderItem
+	Items  []domain.OrderItem
 }
 
 // 定义订单服业务接口
@@ -21,13 +29,13 @@ type OrderUseCase interface {
 }
 
 type orderService struct {
-	repo domain.OrderRepository
+	repo      domain.OrderRepository
 	domainSvc domain.OrderDomainService
 }
 
 func NewOrderService(repo domain.OrderRepository, domainSvc domain.OrderDomainService) OrderUseCase {
 	return &orderService{
-		repo: repo,
+		repo:      repo,
 		domainSvc: domainSvc,
 	}
 }
@@ -45,7 +53,7 @@ func (s *orderService) Create(ctx context.Context, input CreateOrderInput) (stri
 }
 
 func (s *orderService) GetbyId(ctx context.Context, id string) (*domain.Order, error) {
-	return  s.repo.FindById(ctx, id)
+	return s.repo.FindById(ctx, id)
 }
 
 func (s *orderService) Cancel(ctx context.Context, id string) error {

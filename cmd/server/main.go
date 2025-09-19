@@ -9,6 +9,7 @@ import (
 	"github.com/machillka/shopping-system/internal/application"
 	"github.com/machillka/shopping-system/internal/domain"
 	"github.com/machillka/shopping-system/internal/infra/sqlite"
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/spf13/viper"
 )
 
@@ -32,6 +33,7 @@ func main() {
 	rounter := gin.New()
 	rounter.Use(gin.Logger(), gin.Recovery())
 
+	// 注册路由
 	handler := httpadapter.NewOrderHandler(orderSvc)
 	handler.RegisterRoutes(rounter)
 
